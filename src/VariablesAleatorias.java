@@ -1,14 +1,16 @@
-public class Simulacion {
+public class VariablesAleatorias {
     private double[] ri1, ri2, ri3, ri4, ri5, ri6;
     private double[] xllegadas, horaLlegadas, salidaInsp, entradas, tInsp;// salida,entrada,tiempo de inspeccion
     private double[] horaEntradaRep, horaSalidaRep, XRep, tiempoTE;
+    private double[] xUDiscreta;
     private String[] descompostura;
 
-    public Simulacion(double[] ri1, double[] ri2, double[] ri3, double[] ri4) {
+    public VariablesAleatorias(double[] ri1, double[] ri2, double[] ri3, double[] ri4, double[] ri5) {
         this.ri1 = ri1;
         this.ri2 = ri2;
         this.ri3 = ri3;
         this.ri4 = ri4;
+        this.ri5 = ri5;
         // Arreglos de llegadas
         xllegadas = new double[ri1.length];
         horaLlegadas = new double[ri1.length];
@@ -23,20 +25,26 @@ public class Simulacion {
         horaSalidaRep = new double[ri4.length];
         XRep = new double[ri4.length];
         tiempoTE = new double[ri4.length];
+        // Arreglo para Uniforme Discreta
+        xUDiscreta = new double[ri5.length];
 
     }
 
     public void run() {
 
-        // llegadas(); // 150
-        llegadasCuadruple();
-        impresionLlegadas();
+        llegadas(); // 150
+        //  impresionLlegadas();
+        //llegadasCuadruple();
         inspeccion();// 150
+        // impresionInspeccion();
         descompostura();// 75
+        // impresionDespom();
         reparación();// 75
+        impresionReparacion();
 
     }
-    //Llegadas con una exponencial de 2 minutos
+
+    // Llegadas con una exponencial de 2 minutos
     private void llegadas() {
         int i = 0;
 
@@ -52,7 +60,7 @@ public class Simulacion {
             i++;
         }
     }
-    //Llegadas con un a exponencial de 30 minutos
+    // Llegadas con un a exponencial de 30 minutos
 
     private void llegadasCuadruple() {
         int i = 0;
@@ -64,7 +72,7 @@ public class Simulacion {
             if (i == 0) {
                 horaLlegadas[i] = xllegadas[i];
             } else {
-                horaLlegadas[i] = horaLlegadas[i - 1]+xllegadas[i];
+                horaLlegadas[i] = horaLlegadas[i - 1] + xllegadas[i];
             }
             i++;
         }
@@ -189,7 +197,13 @@ public class Simulacion {
         }
     }
 
-    private void dUD() {
-        
+    private void generadorUniformeDisc() {
+        int i = 0;
+
+        while (i < ri5.length) {
+
+            i++;
+
+        }
     }
 }
