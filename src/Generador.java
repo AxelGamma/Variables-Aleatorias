@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Generador {
     // Declaramos las variables x0= semilla
     private int xo, a, m, numeroG, semilla, b;
-    private int j = 0, i = 0;
+    private int i = 0;
     private double uniformidad = 0;
     private double[] numGenerados;
 

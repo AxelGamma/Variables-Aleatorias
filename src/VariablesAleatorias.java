@@ -5,12 +5,13 @@ public class VariablesAleatorias {
     private double[] xUDiscreta;
     private String[] descompostura;
 
-    public VariablesAleatorias(double[] ri1, double[] ri2, double[] ri3, double[] ri4, double[] ri5) {
+    public VariablesAleatorias(double[] ri1, double[] ri2, double[] ri3, double[] ri4, double[] ri5, double[] ri6) {
         this.ri1 = ri1;
         this.ri2 = ri2;
         this.ri3 = ri3;
         this.ri4 = ri4;
         this.ri5 = ri5;
+        this.ri6 = ri6;
         // Arreglos de llegadas
         xllegadas = new double[ri1.length];
         horaLlegadas = new double[ri1.length];
@@ -26,22 +27,23 @@ public class VariablesAleatorias {
         XRep = new double[ri4.length];
         tiempoTE = new double[ri4.length];
         // Arreglo para Uniforme Discreta
-        xUDiscreta = new double[ri5.length];
+        xUDiscreta = new double[ri6.length];
 
     }
 
     public void run() {
 
-        llegadas(); // 150
-        //  impresionLlegadas();
-        //llegadasCuadruple();
+        // llegadas(); // 150
+        llegadasCuadruple();
+        // impresionLlegadas();
         inspeccion();// 150
         // impresionInspeccion();
         descompostura();// 75
         // impresionDespom();
         reparación();// 75
-        impresionReparacion();
-
+        // impresionReparacion();
+        generadorUniformeDisc();
+        impresionUniformeDisc();
     }
 
     // Llegadas con una exponencial de 2 minutos
@@ -198,12 +200,24 @@ public class VariablesAleatorias {
     }
 
     private void generadorUniformeDisc() {
+        int i = 0, a = 2, b = 8;
+        // (a,b)=()
+
+        while (i < ri6.length) {
+            xUDiscreta[i] = a + Math.floor((b - a + 1) * ri6[i]);
+            i++;
+        }
+    }
+
+    public void impresionUniformeDisc()
+    {
+        System.out.println(
+                String.format("%5s", "Ri") + String.format("%28s", "Uniforme Discreta"));
+
         int i = 0;
 
-        while (i < ri5.length) {
-
+        while (i < ri6.length) {            System.out.println(String.format("%5f", ri6[i]) + String.format("%20f", xUDiscreta[i]));
             i++;
-
         }
     }
 }
