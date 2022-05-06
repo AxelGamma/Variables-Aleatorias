@@ -1,31 +1,36 @@
 public class VariablesAleatorias {
     private double[] ri1, ri2, ri3, ri4, ri5, ri6;
-    private double[] xllegadas, horaLlegadas, salidaInsp, entradas, tInsp;// salida,entrada,tiempo de inspeccion
+    private double[] xllegadas, xllegadasCuadruple, horaLlegadas, horaLlegadasCuadrupe, salidaInsp, entradas, tInsp;// salida,entrada,tiempo
+                                                                                                                    // de
+                                                                                                                    // inspeccion
     private double[] horaEntradaRep, horaSalidaRep, XRep, tiempoTE;
     private double[] xUDiscreta;
     private String[] descompostura;
 
     public VariablesAleatorias(double[] ri1, double[] ri2, double[] ri3, double[] ri4, double[] ri5, double[] ri6) {
-        this.ri1 = ri1;
-        this.ri2 = ri2;
-        this.ri3 = ri3;
-        this.ri4 = ri4;
-        this.ri5 = ri5;
-        this.ri6 = ri6;
+        this.ri1 = ri1;// llegadas
+        this.ri2 = ri2;// Inspeccion
+        this.ri3 = ri3;// Descompostura
+        this.ri4 = ri4;// Reparacion
+        this.ri5 = ri5;// Llegadas cuadruples
+        this.ri6 = ri6;// Generamos variables Uniformes discretas(2,8)
         // Arreglos de llegadas
         xllegadas = new double[ri1.length];
         horaLlegadas = new double[ri1.length];
+        horaLlegadasCuadrupe = new double[ri1.length];
         // Arreglos inspeccion
         salidaInsp = new double[ri2.length];
         entradas = new double[ri2.length];
         tInsp = new double[ri2.length];
-
+        // Arreglo de que autos necesitaron compostura
         descompostura = new String[ri3.length];
         // Arreglos de reparacion
         horaEntradaRep = new double[ri4.length];
         horaSalidaRep = new double[ri4.length];
         XRep = new double[ri4.length];
         tiempoTE = new double[ri4.length];
+        // Llegadas cuadruples
+        xllegadasCuadruple = new double[ri5.length];
         // Arreglo para Uniforme Discreta
         xUDiscreta = new double[ri6.length];
 
@@ -33,9 +38,10 @@ public class VariablesAleatorias {
 
     public void run() {
 
-        // llegadas(); // 150
-        llegadasCuadruple();
-        // impresionLlegadas();
+        llegadas(); // 150
+        impresionLlegadas();
+        // llegadasCuadruple();
+        // impresionLlegadasCuadruple();
         inspeccion();// 150
         // impresionInspeccion();
         descompostura();// 75
@@ -43,7 +49,7 @@ public class VariablesAleatorias {
         reparación();// 75
         // impresionReparacion();
         generadorUniformeDisc();
-        impresionUniformeDisc();
+        // impresionUniformeDisc();
     }
 
     // Llegadas con una exponencial de 2 minutos
@@ -68,19 +74,20 @@ public class VariablesAleatorias {
         int i = 0;
 
         while (i < ri1.length) {
-            xllegadas[i] = -30 * Math.log(ri1[i]);
+            xllegadasCuadruple[i] = -30 * Math.log(ri1[i]);
 
             // Vamos sumando el anterior
             if (i == 0) {
-                horaLlegadas[i] = xllegadas[i];
+                horaLlegadasCuadrupe[i] = xllegadasCuadruple[i];
             } else {
-                horaLlegadas[i] = horaLlegadas[i - 1] + xllegadas[i];
+                horaLlegadasCuadrupe[i] = horaLlegadasCuadrupe[i - 1] + xllegadasCuadruple[i];
             }
             i++;
         }
     }
 
     private void impresionLlegadas() {
+        System.out.printf("%34s", "----------Llegadas----------\n");
         System.out.println(
                 String.format("%5s", "Ri") + String.format("%18s", "-2*LN(Ri)") +
                         String.format("%14s", "Llegada"));
@@ -88,6 +95,20 @@ public class VariablesAleatorias {
         while (i < ri1.length) {
             System.out.print(String.format("%5f", ri1[i]) + String.format("%14f", xllegadas[i])
                     + String.format("%15f", horaLlegadas[i]));
+            i++;
+            System.out.println(" ");
+        }
+    }
+
+    private void impresionLlegadasCuadruple() {
+        System.out.printf("%28s", "----------Llegadas cuadruple----------\n");
+        System.out.println(
+                String.format("%5s", "Ri") + String.format("%18s", "-30*LN(Ri)") +
+                        String.format("%14s", "Llegada"));
+        int i = 0;
+        while (i < ri1.length) {
+            System.out.print(String.format("%5f", ri1[i]) + String.format("%14f", xllegadasCuadruple[i])
+                    + String.format("%15f", horaLlegadasCuadrupe[i]));
             i++;
             System.out.println(" ");
         }
@@ -119,7 +140,6 @@ public class VariablesAleatorias {
             }
 
             i++;
-
         }
 
     }
@@ -209,14 +229,14 @@ public class VariablesAleatorias {
         }
     }
 
-    public void impresionUniformeDisc()
-    {
+    private void impresionUniformeDisc() {
         System.out.println(
                 String.format("%5s", "Ri") + String.format("%28s", "Uniforme Discreta"));
 
         int i = 0;
 
-        while (i < ri6.length) {            System.out.println(String.format("%5f", ri6[i]) + String.format("%20f", xUDiscreta[i]));
+        while (i < ri6.length) {
+            System.out.println(String.format("%5f", ri6[i]) + String.format("%20f", xUDiscreta[i]));
             i++;
         }
     }

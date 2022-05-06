@@ -19,6 +19,7 @@ public class Datos {
 
     // Generamos los numeros aleatorios
     private void generacionDatos() {
+        //Datos de nuestras pruebas
         Generador g1 = new Generador();
         Generador g2 = new Generador();
         Generador g3 = new Generador();
