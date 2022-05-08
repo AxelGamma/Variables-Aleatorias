@@ -56,7 +56,8 @@ public class Simulacion {
 
     // llamamos a los metodos que vamos a usar
     public void run() {
-        llegadas();
+        // llegadas();
+        llegadasCuadruple();
         inspeccion();
         // tiempoEspInsp();
         descompostura();
@@ -98,7 +99,6 @@ public class Simulacion {
 
         while (i < ri1.length) {
             xllegadasCuadruple[i] = -0.5 * Math.log(ri1[i]);
-
             // Vamos sumando el anterior
             if (i == 0) {
                 horaLlegadasCuadrupe[i] = xllegadasCuadruple[i];
@@ -330,10 +330,14 @@ public class Simulacion {
         System.out.println(" ");
         int i = 0;
         while (i < ri1.length) {
+            // // Impresiones llegadas
+            // System.out.print(
+            //         String.format("%d", (i + 1)) + String.format("%15f", ri1[i]) + String.format("%14f", xllegadas[i])
+            //                 + String.format("%15f", horaLlegadas[i]));
             // Impresiones llegadas
             System.out.print(
-                    String.format("%d", (i + 1)) + String.format("%15f", ri1[i]) + String.format("%14f", xllegadas[i])
-                            + String.format("%15f", horaLlegadas[i]));
+                    String.format("%d", (i + 1)) + String.format("%15f", ri1[i]) + String.format("%14f", xllegadasCuadruple[i])
+                            + String.format("%15f", horaLlegadasCuadrupe[i]));
 
             System.out.print(" | ");
             // Impresion Inspeccion
