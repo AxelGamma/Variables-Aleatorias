@@ -5,12 +5,12 @@ public class Simulacion {
     private double[] xllegadas, xllegadasCuadruple, horaLlegadas, horaLlegadasCuadrupe, salidaInsp, entradas, tInsp,
             horaEntradaRep, horaSalidaRep, tiempoReparacion, timepoTotalSistema;
     private int[] autobusesRep;
+
     private double[] xUDiscreta;
     private String[] descompostura;
-    private double[] tiempoEspInsp, tiempoEspReparacion;
+    private double[] tiempoEspInsp, tiempoEspReparacion, autobusDescompuesto;
     // Estaciones de reparacion
-    private double A=0, B=0;
-    
+    private double A = 0, B = 0;
 
     public Simulacion(double[] ri1, double[] ri2, double[] ri3, double[] ri4, double[] ri5, double[] ri6) {
         this.ri1 = ri1;// llegadas
@@ -47,7 +47,8 @@ public class Simulacion {
 
         // Autobuses
         autobusesRep = new int[ri1.length];
-        //Estaciones
+        autobusDescompuesto = new double[ri1.length];
+        // Estaciones
     }
 
     public void run() {
@@ -57,10 +58,10 @@ public class Simulacion {
         descompostura();
         reparación();
 
-        impresionSimulacion();
+        // impresionSimulacion();
         impresionReparacion();
         tiempoEnSistema();
-        impresionTimeSistema();
+        // impresionTimeSistema();
     }
 
     /*
@@ -143,6 +144,8 @@ public class Simulacion {
             if (ri3[i] >= 0.0 && ri3[i] <= 0.3) {
                 descompostura[i] = "Si";
                 autobusesRep[a] = i;
+                autobusDescompuesto[a] = salidaInsp[i];
+
                 a++;
             } else if (ri3[i] >= 0.3 && ri3[i] <= 1) {
                 descompostura[i] = "No";
@@ -154,41 +157,36 @@ public class Simulacion {
 
     private void reparación() {
 
-        int i = 0, a = 0;
+        int i = 0;
         while (i < descompostura.length) {
-            if (i != 0) {
-                if (descompostura[i] == "Si") {
-                    // if (horaSalidaRep[a - 1] > horaEntradaRep[a]) {
-                    //     tiempoEspReparacion[a] = horaSalidaRep[a - 1] - horaEntradaRep[a];
-                    // } else {
-                    //     tiempoEspReparacion[a] = 0;
-                    // }
-                    horaEntradaRep[a] = salidaInsp[i];
-                    if (A==0) {
-                        
+            if (autobusDescompuesto[i] != 0) {
+                if (i > 0) {
+                    // Entra a reparacion
+                    horaEntradaRep[i] = autobusDescompuesto[i];
+                    if (horaSalidaRep[i - 1] > horaEntradaRep[i]) {
+                        tiempoEspReparacion[i] = Math.abs(horaEntradaRep[i] - horaSalidaRep[i - 1]);
+                        operacionReparacion(i);
+                    } else {
+                        operacionReparacion(i);
                     }
-
-
-                    tiempoReparacion[a] = 2.1 + (4.5 - 2.1) * ri4[a];// Variable aleatorias, calcula el tiempo
-                    horaSalidaRep[a] = (horaEntradaRep[a] + tiempoReparacion[a]);
-
-                    a++;
+                } else {
+                    horaEntradaRep[i] = autobusDescompuesto[i];
+                    operacionReparacion(i);
+                    A = horaSalidaRep[i];
                 }
+                i++;
             } else {
-                if (descompostura[i] == "Si") {
-                    tiempoEspReparacion[i] = 0;
-                    // calculamos el tiempo de reparacion
-                    horaEntradaRep[a] = salidaInsp[i];
-                    tiempoReparacion[a] = 2.1 + (4.5 - 2.1) * ri4[a];// Variable aleatorias, calcula el tiempo
-                    horaSalidaRep[a] = (horaEntradaRep[a] + tiempoReparacion[a]);
-                    //Ocupamos la primera estacion
-                    A = horaSalidaRep[a];
-                    a++;
-                }
+                break;
             }
-            i++;
         }
 
+    }
+
+    private void operacionReparacion(int i) {
+        // Calculamos el tiempo
+        tiempoReparacion[i] = 2.1 + (4.5 - 2.1) * ri4[i];
+        // Guardamos la hora de salida
+        horaSalidaRep[i] = (horaEntradaRep[i] + tiempoReparacion[i]);
     }
 
     private void tiempoEnSistema() {
