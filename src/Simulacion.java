@@ -61,10 +61,10 @@ public class Simulacion {
         descompostura();
         reparación();
 
-        // impresionSimulacion();
+        impresionSimulacion();
         impresionReparacion();
         tiempoEnSistema();
-        // impresionTimeSistema();
+        impresionTimeSistema();
     }
 
     /*
@@ -146,9 +146,8 @@ public class Simulacion {
         while (i < ri3.length) {
             if (ri3[i] >= 0.0 && ri3[i] <= 0.3) {
                 descompostura[i] = "Si";
-                autobusesRep[a] = i;
+                autobusesRep[a] = i+1;
                 autobusDescompuesto[a] = salidaInsp[i];
-
                 a++;
             } else if (ri3[i] >= 0.3 && ri3[i] <= 1) {
                 descompostura[i] = "No";
@@ -296,7 +295,7 @@ public class Simulacion {
             }
             i++;
         }
-        
+
         double porcentaje=(double)((contA+1)/cont);
         System.out.printf("%s","Uso de la estacion A es: % "+porcentaje);
         
@@ -307,7 +306,7 @@ public class Simulacion {
 
     private void impresionTimeSistema() {
         System.out
-                .println("\n" + String.format("%5s", "No carro") + String.format("%30s", "Tiempo total en el sistema"));
+                .println("\n" + String.format("%5s", "No autobus") + String.format("%30s", "Tiempo total en el sistema"));
         int i = 0;
         while (i < ri1.length) {
             System.out.println(String.format("%5d", (i + 1)) + String.format("%25f", timepoTotalSistema[i]));
