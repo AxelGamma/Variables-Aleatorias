@@ -62,7 +62,7 @@ public class Simulacion {
         descompostura();
         reparación();
 
-        // impresionSimulacion();
+        impresionSimulacion();
         impresionReparacion();
         tiempoEnSistema();
         impresionTimeSistema();
