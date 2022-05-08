@@ -10,9 +10,9 @@ public class Simulacion {
     private String[] descompostura;
     private double[] tiempoEspInsp, tiempoEspReparacion, autobusDescompuesto;
     // Estaciones de reparacion
-    private double A = 0, B = 0,usoA,usoB;
-    private double contA = 0, contB = 0,cont=0;
-    
+    private double A = 0, B = 0, usoA, usoB;
+    private double contA = 0, contB = 0, cont = 0;
+
     public Simulacion(double[] ri1, double[] ri2, double[] ri3, double[] ri4, double[] ri5, double[] ri6) {
         this.ri1 = ri1;// llegadas
         this.ri2 = ri2;// Inspeccion
@@ -71,7 +71,7 @@ public class Simulacion {
      * ===============================================OPERACIONES===================
      * ==============================================================
      */
-    // Llegadas con una exponencial de 2 minutos
+    // Llegadas con una exponencial de 2 horas
     private void llegadas() {
         int i = 0;
 
@@ -83,6 +83,23 @@ public class Simulacion {
                 horaLlegadas[i] = xllegadas[i];
             } else {
                 horaLlegadas[i] = horaLlegadas[i - 1] + xllegadas[i];
+            }
+            i++;
+        }
+    }
+
+    // llegadas con una media de 30 minutos
+    private void llegadasCuadruple() {
+        int i = 0;
+
+        while (i < ri1.length) {
+            xllegadasCuadruple[i] = -0.5 * Math.log(ri1[i]);
+
+            // Vamos sumando el anterior
+            if (i == 0) {
+                horaLlegadasCuadrupe[i] = xllegadasCuadruple[i];
+            } else {
+                horaLlegadasCuadrupe[i] = horaLlegadasCuadrupe[i - 1] + xllegadasCuadruple[i];
             }
             i++;
         }
@@ -146,7 +163,7 @@ public class Simulacion {
         while (i < ri3.length) {
             if (ri3[i] >= 0.0 && ri3[i] <= 0.3) {
                 descompostura[i] = "Si";
-                autobusesRep[a] = i+1;
+                autobusesRep[a] = i + 1;
                 autobusDescompuesto[a] = salidaInsp[i];
                 a++;
             } else if (ri3[i] >= 0.3 && ri3[i] <= 1) {
@@ -182,7 +199,7 @@ public class Simulacion {
                             tiempoEspReparacion[i] = Math.abs(A - horaEntradaRep[i]);
                             horaEntradaRep[i] = A;
                             operacionReparacion(i);
-                            
+
                         } else {
                             operacionReparacion(i);
                             B = horaSalidaRep[i];
@@ -280,7 +297,7 @@ public class Simulacion {
         System.out.println(String.format("%s", "Autobus") +
                 String.format("%25s", "Hora de entrada") + String.format("%18s", "Ri")
                 + String.format("%21s", "X") + String.format("%28s", "Hora salida")
-                + String.format("%28s", "Tiempo de espera")+String.format("%25s", "Uso de estacion"));
+                + String.format("%28s", "Tiempo de espera") + String.format("%25s", "Uso de estacion"));
         int i = 0;
 
         // operaciones
@@ -296,17 +313,18 @@ public class Simulacion {
             i++;
         }
 
-        double porcentaje=(double)((contA+1)/cont);
-        System.out.printf("%s","Uso de la estacion A es: % "+porcentaje);
-        
-        porcentaje=(double)((contB+1)/cont);
-        System.out.printf("\n%s","Uso de la estacion B es: % "+porcentaje);
-        
+        double porcentaje = (double) ((contA + 1) / cont);
+        System.out.printf("%s", "Uso de la estacion A es: % " + porcentaje);
+
+        porcentaje = (double) ((contB + 1) / cont);
+        System.out.printf("\n%s", "Uso de la estacion B es: % " + porcentaje);
+
     }
 
     private void impresionTimeSistema() {
         System.out
-                .println("\n" + String.format("%5s", "No autobus") + String.format("%30s", "Tiempo total en el sistema"));
+                .println("\n" + String.format("%5s", "No autobus")
+                        + String.format("%30s", "Tiempo total en el sistema"));
         int i = 0;
         while (i < ri1.length) {
             System.out.println(String.format("%5d", (i + 1)) + String.format("%25f", timepoTotalSistema[i]));
