@@ -4,14 +4,15 @@ public class Simulacion {
     private final double[] ri1, ri2, ri3, ri4, ri5, ri6;
     private double[] xllegadas, xllegadasCuadruple, horaLlegadas, horaLlegadasCuadrupe, salidaInsp, entradas, tInsp,
             horaEntradaRep, horaSalidaRep, tiempoReparacion, timepoTotalSistema;
-    private int[] autobusesRep;
+    private int[] autobusesRep, usoEstacion;
 
     private double[] xUDiscreta;
     private String[] descompostura;
     private double[] tiempoEspInsp, tiempoEspReparacion, autobusDescompuesto;
     // Estaciones de reparacion
-    private double A = 0, B = 0;
-
+    private double A = 0, B = 0,usoA,usoB;
+    private double contA = 0, contB = 0,cont=0;
+    
     public Simulacion(double[] ri1, double[] ri2, double[] ri3, double[] ri4, double[] ri5, double[] ri6) {
         this.ri1 = ri1;// llegadas
         this.ri2 = ri2;// Inspeccion
@@ -49,6 +50,8 @@ public class Simulacion {
         autobusesRep = new int[ri1.length];
         autobusDescompuesto = new double[ri1.length];
         // Estaciones
+        usoEstacion = new int[ri1.length];
+
     }
 
     public void run() {
@@ -162,19 +165,40 @@ public class Simulacion {
             if (autobusDescompuesto[i] != 0) {
                 if (i > 0) {
                     // Entra a reparacion
+
                     horaEntradaRep[i] = autobusDescompuesto[i];
-                    if (horaSalidaRep[i - 1] > horaEntradaRep[i]) {
-                        tiempoEspReparacion[i] = Math.abs(horaEntradaRep[i] - horaSalidaRep[i - 1]);
-                        operacionReparacion(i);
-                    } else {
-                        operacionReparacion(i);
+                    if (A < B || A < horaEntradaRep[i]) {
+                        if (A > horaEntradaRep[i]) {
+                            tiempoEspReparacion[i] = Math.abs(A - horaEntradaRep[i]);
+                            horaEntradaRep[i] = A;
+                            operacionReparacion(i);
+                        } else {
+                            operacionReparacion(i);
+                            A = horaSalidaRep[i];
+                        }
+                        usoEstacion[i] = 1;
+                        contA++;
+                    } else if (B < A || B < horaEntradaRep[i]) {
+                        if (B > horaEntradaRep[i]) {
+                            tiempoEspReparacion[i] = Math.abs(A - horaEntradaRep[i]);
+                            horaEntradaRep[i] = A;
+                            operacionReparacion(i);
+                            
+                        } else {
+                            operacionReparacion(i);
+                            B = horaSalidaRep[i];
+                        }
+                        usoEstacion[i] = 2;
+                        contB++;
                     }
                 } else {
                     horaEntradaRep[i] = autobusDescompuesto[i];
                     operacionReparacion(i);
                     A = horaSalidaRep[i];
+                    usoEstacion[i] = 1;
                 }
                 i++;
+                cont++;
             } else {
                 break;
             }
@@ -257,7 +281,7 @@ public class Simulacion {
         System.out.println(String.format("%s", "Autobus") +
                 String.format("%25s", "Hora de entrada") + String.format("%18s", "Ri")
                 + String.format("%21s", "X") + String.format("%28s", "Hora salida")
-                + String.format("%38s", "Tiempo de espera"));
+                + String.format("%28s", "Tiempo de espera")+String.format("%25s", "Uso de estacion"));
         int i = 0;
 
         // operaciones
@@ -266,12 +290,19 @@ public class Simulacion {
                 System.out.println(String.format("%d", autobusesRep[i]) + String.format("%25f", horaEntradaRep[i])
                         + String.format("%27f", ri4[i])
                         + String.format("%23f", tiempoReparacion[i]) + String.format("%23f", horaSalidaRep[i])
-                        + String.format("%23f", tiempoEspReparacion[i]));
+                        + String.format("%23f", tiempoEspReparacion[i]) + String.format("%23d", usoEstacion[i]));
             } else {
                 break;
             }
             i++;
         }
+        
+        double porcentaje=(double)((contA+1)/cont);
+        System.out.printf("%s","Uso de la estacion A es: % "+porcentaje);
+        
+        porcentaje=(double)((contB+1)/cont);
+        System.out.printf("\n%s","Uso de la estacion B es: % "+porcentaje);
+        
     }
 
     private void impresionTimeSistema() {
