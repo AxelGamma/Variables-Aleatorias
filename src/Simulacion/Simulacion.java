@@ -1,3 +1,4 @@
+package Simulacion;
 
 public class Simulacion {
 
@@ -58,21 +59,19 @@ public class Simulacion {
     public void run() {
         // llegadas();
         llegadasCuadruple();
-        inspeccion();
-        // tiempoEspInsp();
+        // inspeccion();
+        inspeccionCuadruple();
         descompostura();
         reparación();
 
-        impresionSimulacion();
-        impresionReparacion();
+        // impresionSimulacion();
+        // impresionReparacion();
         tiempoEnSistema();
         impresionTimeSistema();
     }
 
-    /*
-     * ===============================================OPERACIONES===================
-     * ==============================================================
-     */
+    // ===============================================OPERACIONES===================
+
     // Llegadas con una exponencial de 2 horas
     private void llegadas() {
         int i = 0;
@@ -119,6 +118,7 @@ public class Simulacion {
         while (i < horaLlegadas.length) {
             // El bucle repite hasta terminar con todas las llegadas
             if (i == 0) {
+                entradas[i] = horaLlegadas[i];
                 // Calculamos el tiempo de inspeccion
                 tInsp[i] = 0.25 + (1.05 - 0.25) * ri2[i];
                 // Luego sumamos la hora de entrada a inspeecion y la hora de entrada del
@@ -171,6 +171,69 @@ public class Simulacion {
 
     }
 
+    private void inspeccionCuadruple() {
+
+        // Calculo de tiempo de inspeccion
+        // ri2 son nuestro nuevos numeros aleatorios diferentes a los ri1
+        // Inicializamos la primera hora de llegada con la primera hora de entrada
+        entradas[0] = horaLlegadasCuadrupe[0];
+        int i = 0;
+        while (i < horaLlegadasCuadrupe.length) {
+            // El bucle repite hasta terminar con todas las llegadas
+            if (i == 0) {
+                entradas[i] = horaLlegadasCuadrupe[i];
+                // Calculamos el tiempo de inspeccion
+                tInsp[i] = 0.25 + (1.05 - 0.25) * ri2[i];
+                // Luego sumamos la hora de entrada a inspeecion y la hora de entrada del
+                // autobus
+                salidaInsp[i] = entradas[i] + tInsp[i];
+
+            } else {
+                /*
+                 * Para el primer caso vemos si hora de llegada es mayor o igual a la hora
+                 * ultima
+                 * hora de salida
+                 */
+                if (horaLlegadasCuadrupe[i] >= salidaInsp[i - 1]) {
+                    /* Calculamos el tiempo en la inspeccion */
+                    tInsp[i] = 0.25 + (1.05 - 0.25) * ri2[i];
+                    // asignamos ala hora de entrada la hora de llegada del autobus
+                    // esto en caso de que no haya tenido que esperar el autobus
+                    tiempoEspInsp[i] = 0;// el tiempo de espera es cero
+                    entradas[i] = horaLlegadasCuadrupe[i];
+                    // calculamos el tiempo de salida sumando la de entrada y el tiempo de
+                    // inspeccion
+                    salidaInsp[i] = entradas[i] + tInsp[i];
+
+                } else {
+                    // calculamos el tiempo de inspeccion
+                    tInsp[i] = 0.25 + (1.05 - 0.25) * ri2[i];
+                    /*
+                     * calculamos el tiempo de espera en este caso ya que el tiempo de salida de el
+                     * anterior autobus es mayor entonces el autobus actual entra cuando salda el
+                     * que esta
+                     * en la inspeccion
+                     */
+
+                    /*
+                     * asignamos a nuestro arreglo el tiempo de espera= salida del autobus en
+                     * estacion- hora de llegada de autobus
+                     */
+                    tiempoEspInsp[i] = salidaInsp[i - 1] - horaLlegadasCuadrupe[i];
+                    /* Hora de entrada saria la hora de salida del anterior autobus */
+                    entradas[i] = salidaInsp[i - 1];
+                    // calculamos el tiempo de salida sumando la de entrada y el tiempo de
+                    // inspeccion
+                    salidaInsp[i] = entradas[i] + tInsp[i];
+
+                }
+            }
+
+            i++;
+        }
+
+    }
+
     private void descompostura() {
         // Las probabilidades que un autobus este descompuesto son las siguientes
         // si 0.0 0.3 [0-0.3]
@@ -183,7 +246,7 @@ public class Simulacion {
              * En el caso que nuestro numero aleatorio este en el rango
              * [0.0,0.3] si necesita reparacion
              */
-            if (ri3[i] >= 0.0 && ri3[i] <= 0.3) {
+            if (ri3[i] > 0.0 && ri3[i] <= 0.3) {
                 descompostura[i] = "Si";
                 // Guardamos el numero del autobus que necesito reparacion
                 autobusesRep[a] = i + 1;
@@ -191,7 +254,7 @@ public class Simulacion {
                 autobusDescompuesto[a] = salidaInsp[i];
                 a++;
             } /* En caso contrario no */
-            else if (ri3[i] >= 0.3 && ri3[i] <= 1) {
+            else if (ri3[i] > 0.3 && ri3[i] <= 1) {
                 descompostura[i] = "No";
             }
             i++;
@@ -227,6 +290,7 @@ public class Simulacion {
                             horaEntradaRep[i] = A;
                             // Realizamos las operaciones
                             operacionReparacion(i);
+                            A = horaSalidaRep[i];
                         } /*
                            * En caso de que no sea la primera condicion pasa directamente
                            * ya que estaria desocupada la estacion
@@ -249,10 +313,10 @@ public class Simulacion {
                          * solo que aqui trabajamos con la estacion B
                          */
                         if (B > horaEntradaRep[i]) {
-                            tiempoEspReparacion[i] = Math.abs(A - horaEntradaRep[i]);
-                            horaEntradaRep[i] = A;
+                            tiempoEspReparacion[i] = Math.abs(B - horaEntradaRep[i]);
+                            horaEntradaRep[i] = B;
                             operacionReparacion(i);
-
+                            B = horaSalidaRep[i];
                         } else {
                             operacionReparacion(i);
                             B = horaSalidaRep[i];
@@ -297,8 +361,8 @@ public class Simulacion {
                 // Tiempo de espera inspeccion+ Tiempo de inpeccion + Tiempo en reparacion
                 timepoTotalSistema[i] = tiempoEspInsp[i] + tInsp[i] + tiempoReparacion[a];
                 a++;
-            } else {//En cambio de no haber tenido reparacion
-                //Solo calculamos el tiempo de espera en inspeccion y tiempo de la inpeccion
+            } else {// En cambio de no haber tenido reparacion
+                // Solo calculamos el tiempo de espera en inspeccion y tiempo de la inpeccion
                 timepoTotalSistema[i] = tiempoEspInsp[i] + tInsp[i];
             }
             i++;
@@ -332,11 +396,13 @@ public class Simulacion {
         while (i < ri1.length) {
             // // Impresiones llegadas
             // System.out.print(
-            //         String.format("%d", (i + 1)) + String.format("%15f", ri1[i]) + String.format("%14f", xllegadas[i])
-            //                 + String.format("%15f", horaLlegadas[i]));
+            // String.format("%d", (i + 1)) + String.format("%15f", ri1[i]) +
+            // String.format("%14f", xllegadas[i])
+            // + String.format("%15f", horaLlegadas[i]));
             // Impresiones llegadas
             System.out.print(
-                    String.format("%d", (i + 1)) + String.format("%15f", ri1[i]) + String.format("%14f", xllegadasCuadruple[i])
+                    String.format("%d", (i + 1)) + String.format("%15f", ri1[i])
+                            + String.format("%14f", xllegadasCuadruple[i])
                             + String.format("%15f", horaLlegadasCuadrupe[i]));
 
             System.out.print(" | ");

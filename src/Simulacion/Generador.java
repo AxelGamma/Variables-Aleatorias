@@ -1,3 +1,4 @@
+package Simulacion;
 
 import java.util.Scanner;
 

@@ -1,3 +1,4 @@
+package Simulacion;
 public class VariablesAleatorias {
     private double[] ri1, ri2, ri3, ri4, ri5, ri6;
     private double[] xllegadas, xllegadasCuadruple, horaLlegadas, horaLlegadasCuadrupe, salidaInsp, entradas, tInsp;// salida,entrada,tiempo
