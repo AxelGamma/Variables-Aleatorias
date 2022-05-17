@@ -30,7 +30,7 @@ public class Huecos {
 
         i = 0;
         while (i < muestra.length) {
-            System.out.println(muestra[i]);
+            /*System.out.println(muestra[i]);*/
             i++;
         }
         i = 0;
@@ -44,25 +44,25 @@ public class Huecos {
         }
         i = 0;
         while (i < uNosCeros.length) {
-            System.out.print(" " + uNosCeros[i]);
+            /*System.out.print(" " + uNosCeros[i]);*/
             i++;
             if (i == uNosCeros.length) {
-                System.out.println(" ");
+                /*System.out.println(" ");*/
             }
         }
 
         conteoHuecos();
         contarHuecos();
-        System.out.println(String.format("%5s", "i") + String.format("%10s", " Oi") + String.format("%15s", "Ei")
-                + String.format("%17s", "(0i-Ei)^2/E"));
+        /*System.out.println(String.format("%5s", "i") + String.format("%10s", " Oi") + String.format("%15s", "Ei")
+                + String.format("%17s", "(0i-Ei)^2/E"));*/
         i = 0;
         while (i < sizeHuecos.length) {
 
             Ei = (getSumahuecos() * (b - a) * Math.pow((1 - (b - a)), i));
             estadistico = Math.pow((sizeHuecos[i] - Ei), 2) / Ei;
 
-            System.out.println(String.format("%5d", (i)) + String.format("%10d", sizeHuecos[i])
-                    + String.format("%15f", Ei) + String.format("%15f", estadistico));
+            /*System.out.println(String.format("%5d", (i)) + String.format("%10d", sizeHuecos[i])
+                    + String.format("%15f", Ei) + String.format("%15f", estadistico));*/
             sumaAnteriores += Ei;
             chiCalculada += estadistico;
             i++;
@@ -70,17 +70,17 @@ public class Huecos {
                 Ei = (getSumahuecos() - sumaAnteriores);
                 estadistico = Math.pow(sizeHuecos[i] - Ei, 2) / Ei;
                 chiCalculada += estadistico;
-                System.out.println(String.format("%5d", (i)) + String.format("%10d", sizeHuecos[i])
+                /*System.out.println(String.format("%5d", (i)) + String.format("%10d", sizeHuecos[i])
                         + String.format("%15f", Ei)
-                        + String.format("%15f", estadistico));
+                        + String.format("%15f", estadistico));*/
 
                 sumaAnteriores += (getSumahuecos() - sumaAnteriores);
                 i++;
             }
         }
-        System.out.println(String.format("%5s", " ") + String.format("%10d", getSumahuecos())
+        /*System.out.println(String.format("%5s", " ") + String.format("%10d", getSumahuecos())
                 + String.format("%15f", sumaAnteriores) + String.format("%15f", chiCalculada)
-                + " = chiCuadrada Calculada");
+                + " = chiCuadrada Calculada");*/
 
         estadoPrueba();
 

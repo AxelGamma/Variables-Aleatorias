@@ -37,7 +37,7 @@ public class ChiCuadrada {
                 rango5 = contar(0.800, 1);
                 sumaObserv = rango1 + rango2 + rango3 + rango4 + rango5;
                 // Formato de salida
-                System.out.printf("\n%62s", "-Prueba chiCuadrada-\n");
+                /*System.out.printf("\n%62s", "-Prueba chiCuadrada-\n");
                 System.out.println(String.format("%s", "i") + "" + String.format("%23s", "Rangos") + ""
                                 + String.format("%22s", "Observado") + "" + String.format("%22s", "Esperado") + ""
                                 + String.format("%22s", "((O-E)^2)/E"));// <-Estadistico de la prueba
@@ -60,15 +60,16 @@ public class ChiCuadrada {
 
                 System.out.println(String.format("%s", 5) + String.format("%25s", "0.800>= ri < 1")
                                 + String.format("%16s", rango5) + String.format("%22s", esperado)
-                                + String.format("%25f", Math.pow(rango5 - esperado, 2) / rango5));
+                                + String.format("%25f", Math.pow(rango5 - esperado, 2) / rango5));*/
 
                 chiCalculada = (Math.pow(rango1 - esperado, 2) / rango1) + (Math.pow(rango2 - esperado, 2) / rango2)
                                 + (Math.pow(rango3 - esperado, 2) / rango3) + (Math.pow(rango4 - esperado, 2) / rango4)
                                 + (Math.pow(rango5 - esperado, 2) / rango5);
 
-                System.out.println(String.format("%42d", sumaObserv) + String.format("%22d", esperado * 5)
+                /*System.out.println(String.format("%42d", sumaObserv) + String.format("%22d", esperado * 5)
                                 + String.format("%25f = ChiCalculada", chiCalculada));
-                System.out.println(estadoPrueba());
+                System.out.println(estadoPrueba());*/
+                estadoPrueba();
         }
 
         // valor teorico

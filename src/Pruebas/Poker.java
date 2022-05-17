@@ -27,9 +27,9 @@ public class Poker {
 
         i = 0;
 
-        System.out.println("---Datos de guardado de tipo array---\n");
+        /*System.out.println("---Datos de guardado de tipo array---\n");*/
         while (i < formateado.length) {
-            System.out.println(formateado[i]); // Muestra o imprime los numeros
+            /*System.out.println(formateado[i]);*/ // Muestra o imprime los numeros
             j = 2;
             muestraPoker[i] = "";
             while (j < 7) {
@@ -41,14 +41,14 @@ public class Poker {
         }
 
         // Realizacion de las pruebas
-        System.out.println(
-                "---------------------------------------------------------------------------------------------------------");
+        /*System.out.println(
+                "---------------------------------------------------------------------------------------------------------");*/
         pruebas();
         i = 0;
         while (i < muestraPoker.length) {
-            System.out.println(String.format("%d", (i + 1)) + String.format("%10s",
+            /*System.out.println(String.format("%d", (i + 1)) + String.format("%10s",
                     muestraPoker[i])
-                    + String.format("%5s", resultPruebas[i]));
+                    + String.format("%5s", resultPruebas[i]));*/
             i++;
         }
 
@@ -140,7 +140,7 @@ public class Poker {
         this.chiCalculada = tdEsta + parEsta + dosParesEsta + terciaEsta + terciaParEsta + pokerEsta + quintillaEsta;
         // Titulo Todos diferentes--- Un par--- Dos
         // pares---Tercia---Tercia+par---Poker---Quintilla
-        System.out.println(String.format("%35s", "Todos diferentes")
+        /*System.out.println(String.format("%35s", "Todos diferentes")
                 + String.format("%10s", "Un par") + String.format("%15s", "Dos pares") + String.format("%15s", "Tercia")
                 +
                 String.format("%15s", "Tercia + Par") + String.format("%15s", "Poquer")
@@ -163,7 +163,7 @@ public class Poker {
                 + String.format("%17f", terciaEsta)
                 +
                 String.format("%12f", terciaParEsta) + String.format("%17f", pokerEsta)
-                + String.format("%13f", quintillaEsta) + String.format("%17f", chiCalculada));
+                + String.format("%13f", quintillaEsta) + String.format("%17f", chiCalculada));*/
         estadoPrueba();
 
     }
