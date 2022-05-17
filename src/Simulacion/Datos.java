@@ -29,17 +29,17 @@ public class Datos {
 
         //Replica 1
         
-        /*g1.datos(41, 1203, 16);
+       /*  g1.datos(41, 1203, 16);
         g2.datos(295, 419, 16);
         g3.datos(43, 1003, 16);
-        g4.datos(121, 653, 16);*/
+        g4.datos(121, 653, 16); */
 
         //Replica 2
 
-        /*g1.datos(223, 733, 16);
+        g1.datos(223, 733, 16);
         g2.datos(377, 611, 16);
         g3.datos(541, 1013, 16);
-        g4.datos(357, 283, 16);*/
+        g4.datos(357, 283, 16);
 
         //Replica3
 

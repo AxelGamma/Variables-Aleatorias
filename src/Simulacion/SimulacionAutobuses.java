@@ -7,12 +7,11 @@ public class SimulacionAutobuses {
     private double[] tiempoLlegada, horaLlegadas, salidaInsp, entradas, tInsp,
             horaEntradaRep, horaSalidaRep, tiempoReparacion, timepoTotalSistema;
     private int[] autobusesRep, usoEstacion;
-
     private String[] descompostura;
     private double[] tiempoEspInsp, tiempoEspReparacion, autobusDescompuesto;
     // Estaciones de reparacion
     private double A = 0, B = 0, usoA, usoB;
-    private double contA = 0, contB = 0, cont = 0, media = 0;
+    private double contA = 0, contB = 0, cont = 0, media = 0,horasSimuladas=0;
     private int contAutobuses = 0;
 
     public SimulacionAutobuses(double[] ri1, double[] ri2, double[] ri3, double[] ri4) {
@@ -55,6 +54,9 @@ public class SimulacionAutobuses {
     // llamamos a los metodos que vamos a usar
     public void run() {
         media();
+        tiempoAsimular();
+        
+        //Metodos de operacion
         llegadas(getMedia());
         inspeccion();
         descompostura();
@@ -86,7 +88,7 @@ public class SimulacionAutobuses {
             }
 
             contAutobuses++;
-            if (horaLlegadas[i] >= 160.0) {
+            if (horaLlegadas[i] >= getHorasSimuladas()) {
                 break;
             }
 
@@ -388,6 +390,8 @@ public class SimulacionAutobuses {
         setMedia(conversor(Double.parseDouble(dato)));
     }
 
+    
+
     private double getMedia() {
         return media;
     }
@@ -396,10 +400,25 @@ public class SimulacionAutobuses {
         this.media = media;
     }
 
-    private double conversor(double numero){
+    private double conversor(double numero) {
         double operacion;
-        operacion = ((double)1/60)*numero;
+        operacion = ((double) 1 / 60) * numero;
         return operacion;
     }
+    
+    private void tiempoAsimular() {
+        String tiempo;
+        tiempo = JOptionPane.showInputDialog("Introduce el tiempo a simular en horas");
+        setHorasSimuladas(Double.parseDouble(tiempo));
+    }
+
+    public void setHorasSimuladas(double horasSimuladas) {
+        this.horasSimuladas = horasSimuladas;
+    }
+
+    public double getHorasSimuladas() {
+        return horasSimuladas;
+    }
+    
 
 }
