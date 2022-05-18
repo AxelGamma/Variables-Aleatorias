@@ -1,6 +1,6 @@
 package Pruebas;
 
-public class AppMain {
+public class AppPruebas {
 
     public static void main(String[] args) throws Exception {
 

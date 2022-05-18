@@ -1,6 +1,6 @@
 package Simulacion;
 
-public class Aplicacion {
+public class AppSimulacion {
     // Tamaño de la pruebas
     public static void main(String[] args) {
         //Los 2000 son el numero de muestras que vamos a tomar 

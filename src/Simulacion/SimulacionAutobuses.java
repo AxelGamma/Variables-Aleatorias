@@ -11,15 +11,14 @@ public class SimulacionAutobuses {
     private double[] tiempoEspInsp, tiempoEspReparacion, autobusDescompuesto;
     // Estaciones de reparacion
     private double A = 0, B = 0, usoA, usoB;
-    private double contA = 0, contB = 0, cont = 0, media = 0,horasSimuladas=0;
-    private int contAutobuses = 0;
+    private double contA = 0, contB = 0, cont = 0, media = 0,horasSimuladas=0,retrasoMedioInsp=0,retrasoMedioRep=0;
+    private int contAutobuses = 0,tuvoEsperaInsp=0,tuvoEsperaRep=0;
 
     public SimulacionAutobuses(double[] ri1, double[] ri2, double[] ri3, double[] ri4) {
         this.ri1 = ri1;// llegadas
         this.ri2 = ri2;// Inspeccion
         this.ri3 = ri3;// Descompostura
         this.ri4 = ri4;// Reparacion
-
 
         // Arreglos de llegadas
         tiempoLlegada = new double[ri1.length];
@@ -150,7 +149,7 @@ public class SimulacionAutobuses {
                     // calculamos el tiempo de salida sumando la de entrada y el tiempo de
                     // inspeccion
                     salidaInsp[i] = entradas[i] + tInsp[i];
-
+                    tuvoEsperaInsp++;
                 }
             }
 
@@ -215,6 +214,7 @@ public class SimulacionAutobuses {
                             // Realizamos las operaciones
                             operacionReparacion(i);
                             A = horaSalidaRep[i];
+                            tuvoEsperaRep++;
                         } /*
                          * En caso de que no sea la primera condicion pasa directamente
                          * ya que estaria desocupada la estacion
@@ -240,6 +240,7 @@ public class SimulacionAutobuses {
                             horaEntradaRep[i] = B;
                             operacionReparacion(i);
                             B = horaSalidaRep[i];
+                            tuvoEsperaRep++;
                         } else {
                             operacionReparacion(i);
                             B = horaSalidaRep[i];
@@ -367,7 +368,27 @@ public class SimulacionAutobuses {
 
         porcentaje = (double) ((contB) / cont);
         System.out.printf("\n%s", "Uso de la estacion B es: " + porcentaje);
+        System.out.printf("\n%s","Retraso medio cola de inspeccion: "+retrasoMediodeColaInspec());
+        System.out.printf("\n%s","Retraso medio cola de reparacion: "+retrasoMedioColaReparacion());
 
+    }
+
+    private double retrasoMediodeColaInspec(){
+        int i=0;
+        while(i<contAutobuses){
+            retrasoMedioInsp+=tiempoEspInsp[i];
+            i++;
+        }
+        return retrasoMedioInsp/tuvoEsperaInsp;
+    }
+    private double retrasoMedioColaReparacion(){
+        int i=0;
+        while(i<contAutobuses){
+            retrasoMedioRep+=tiempoEspReparacion[i];
+            i++;
+        }
+
+        return retrasoMedioRep/tuvoEsperaRep;
     }
 
     private void impresionTimeSistema() {

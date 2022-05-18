@@ -17,11 +17,12 @@ Xo a b
 ## Generamos 16,384 numeros
 '''		
     Xo      a       b
+
     41      1203    16
     295 	419 	16
     43      1003    16
     121     653     16
-    
+
     223     733    	16
     377	    611	    16
     541	    1013    16
@@ -67,3 +68,7 @@ Xo a b
     635	7467	16
     535	8755	16
 '''
+
+
+# Pendientes
+-Retrazomedio de cada cola
