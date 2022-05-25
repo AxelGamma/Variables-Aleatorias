@@ -70,5 +70,8 @@ Xo a b
 '''
 
 
-# Pendientes
--Retrazomedio de cada cola
+## Pendientes
+Multiplicar los datos ya que lo estamos manejando en horas
+por lo tanto pasar los datos a segundos
+Medias de colas=Datos obtenido*60 min*60seg
+ó pasar los datos de GPSS a horas
